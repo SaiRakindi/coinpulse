@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import DataTable from "@/components/DataTable";
 import Link from "next/link";
@@ -67,7 +66,7 @@ const Page = () => {
         </div>
 
         <p>Trending Coins</p>
-        <DataTable data={[]} columns={[]} rowKey={} />
+        <DataTable data={[]} columns={columns} rowKey={} />
       </section>
 
       <section className="w-full mt-7 space-y-4">
