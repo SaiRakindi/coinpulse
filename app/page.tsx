@@ -44,6 +44,11 @@ const columns: DataTableColumn<TrendingCoin>[] = [
       );
     },
   },
+  {
+    header: "Price",
+    cellClassName: "price-cell",
+    cell: (coin) => coin.item.data.price,
+  },
 ];
 
 const Page = () => {
@@ -66,7 +71,10 @@ const Page = () => {
         </div>
 
         <p>Trending Coins</p>
-        <DataTable data={[]} columns={columns} rowKey={} />
+        <DataTable
+          data={[]}
+          columns={[{ header: "Title" }, { header: "Price" }]}
+        />
       </section>
 
       <section className="w-full mt-7 space-y-4">
