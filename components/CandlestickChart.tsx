@@ -13,6 +13,7 @@ import {
   createChart,
   IChartApi,
   ISeriesApi,
+  OhlcData,
 } from "lightweight-charts";
 import { useEffect, useReducer, useRef, useState, useTransition } from "react";
 
@@ -40,7 +41,7 @@ const CandlestickChart = ({
       const newData = await fetcher<OHLCData[]>(`/coins/${coinId}/ohlc`, {
         vs_currency: "usd",
         days,
-        interval,
+        // interval,
         precision: "full",
       });
 
@@ -74,7 +75,49 @@ const CandlestickChart = ({
     const series = chart.addSeries(CandlestickSeries, getCandlestickConfig());
 
     series.setData(convertOHLCData(ohlcData));
+    chart.timeScale().fitContent();
+
+    chartRef.current = chart;
+    chandleSeriesRef.current = series;
+
+    const observer = new ResizeObserver((entries) => {
+      if (!entries.length) return;
+
+      chart.applyOptions({ width: entries[0].contentRect.width });
+    });
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+
+      chart.remove();
+      chartRef.current = null;
+
+      chandleSeriesRef.current = null;
+    };
   }, [height]);
+
+  useEffect(() => {
+    if (!chandleSeriesRef.current) return;
+
+    const convertedtoSeconds = ohlcData.map(
+      (item) =>
+        [
+          Math.floor(item[0] / 1000),
+          item[1],
+          item[2],
+          item[3],
+          item[4],
+        ] as OHLCData
+    );
+
+    const converted = convertOHLCData(convertedtoSeconds);
+
+    chandleSeriesRef.current.setData(converted);
+
+    chartRef.current?.timeScale().fitContent();
+  }, [ohlcData, period]);
 
   return (
     <div id="candlestick-chart">
