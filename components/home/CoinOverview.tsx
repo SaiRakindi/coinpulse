@@ -5,11 +5,18 @@ import React from "react";
 import { CoinOverviewFallback } from "./fallback";
 
 const CoinOverview = async () => {
-  let coin;
+  let coin, coinOHLCData;
 
   try {
     coin = await fetcher<CoinDetailsData>("/coins/bitcoin", {
       dex_pair_format: "symbol",
+    });
+
+    coinOHLCData = fetcher<OHLCData>("/coins/bitcoin/ohlc", {
+      vs_currency: "usd",
+      days: 1,
+      interval: " hourly",
+      precision: "full",
     });
   } catch (error) {
     console.error("Error fetching coin details:", error);
