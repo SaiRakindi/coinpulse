@@ -6,17 +6,19 @@ import { CoinOverviewFallback } from "./fallback";
 import CandlestickChart from "../CandlestickChart";
 
 const CoinOverview = async () => {
-  const coinOHLCData: any = [];
-
   try {
-    const [coin] = await Promise.all([
+    const [coin, coinOHLCData] = await Promise.all([
       await fetcher<CoinDetailsData>("/coins/bitcoin", {
         dex_pair_format: "symbol",
       }),
+      fetcher<OHLCData[]>("/coins/bitcoin/ohlc", {
+        vs_currency: "usd",
+        days: 1,
+        // interval: "hourly",
+        precision: "full",
+      }),
       ,
     ]);
-
-    console.log("coin", coin);
 
     return (
       <div id="coin-overview">
