@@ -1,13 +1,8 @@
-import Image from "next/image";
-import DataTable from "@/components/DataTable";
-import Link from "next/link";
-import { cn, formatCurrency } from "@/lib/utils";
-import { TrendingDown, TrendingUp } from "lucide-react";
-import { fetcher } from "@/lib/coingecko.actions";
 import { Suspense } from "react";
 import CoinOverview from "@/components/home/CoinOverview";
 import TrendingCoins from "@/components/home/TrendingCoins";
 import {
+  CategoriesFallback,
   CoinOverviewFallback,
   TrendingCoinsFallback,
 } from "@/components/home/fallback";
@@ -33,7 +28,7 @@ const Page = async () => {
       </section>
 
       <section className="w-full mt-7 space-y-4">
-        <Suspense fallback={<p>Loading Categories...</p>}>
+        <Suspense fallback={<CategoriesFallback />}>
           <Categories />
         </Suspense>
       </section>

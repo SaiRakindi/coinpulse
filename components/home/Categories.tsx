@@ -3,6 +3,7 @@ import DataTable from "@/components/DataTable";
 import Image from "next/image";
 import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
+import { CategoriesFallback } from "./fallback";
 
 const Categories = async () => {
   try {
@@ -73,7 +74,7 @@ const Categories = async () => {
     );
   } catch (error) {
     console.error("Error fetching categories:", error);
-    return <p>Categories Fallback</p>;
+    return <CategoriesFallback />;
   }
 };
 
