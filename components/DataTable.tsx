@@ -1,13 +1,11 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { cn } from "@/lib/utils";
 
 const DataTable = <T,>({
@@ -15,21 +13,23 @@ const DataTable = <T,>({
   data,
   rowKey,
   tableClassName,
+  headerClassName,
   headerRowClassName,
   headerCellClassName,
   bodyRowClassName,
   bodyCellClassName,
-  headerClassName,
 }: DataTableProps<T>) => {
   return (
     <Table className={cn("custom-scrollbar", tableClassName)}>
       <TableHeader className={headerClassName}>
-        <TableRow className={cn("hover:bg-transparent", headerRowClassName)}>
-          {columns.map((column, index) => (
+        <TableRow className={cn("hover:bg-transparent!", headerRowClassName)}>
+          {columns.map((column, i) => (
             <TableHead
-              key={index}
+              key={i}
               className={cn(
-                "bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5"
+                "bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5",
+                headerCellClassName,
+                column.headClassName
               )}
             >
               {column.header}
@@ -47,7 +47,14 @@ const DataTable = <T,>({
             )}
           >
             {columns.map((column, columnIndex) => (
-              <TableCell key={columnIndex}>
+              <TableCell
+                key={columnIndex}
+                className={cn(
+                  "py-4 first:pl-5 last:pr-5",
+                  bodyCellClassName,
+                  column.cellClassName
+                )}
+              >
                 {column.cell(row, rowIndex)}
               </TableCell>
             ))}
@@ -57,4 +64,5 @@ const DataTable = <T,>({
     </Table>
   );
 };
+
 export default DataTable;
