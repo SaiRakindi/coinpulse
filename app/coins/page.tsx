@@ -1,3 +1,4 @@
+import CoinsPagination from "@/components/CoinsPagination";
 import DataTable from "@/components/DataTable";
 import { fetcher } from "@/lib/coingecko.actions";
 import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
@@ -84,6 +85,8 @@ const CoinsPage = async ({ searchParams }: NextPageProps) => {
           data={coinsData}
           rowKey={(coin) => coin.id}
         />
+
+        <CoinsPagination />
       </div>
     </main>
   );
