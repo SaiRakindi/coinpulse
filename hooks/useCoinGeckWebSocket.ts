@@ -145,4 +145,6 @@ export const useCoinGeckWebSocket = ({
       });
     }
   }, [coinId, poolId, isWsReady, liveInterval]);
+
+  return { price, trades, ohlcv, isConnected: isWsReady };
 };
