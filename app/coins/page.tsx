@@ -74,6 +74,11 @@ const CoinsPage = async ({ searchParams }: NextPageProps) => {
     },
   ];
 
+  const hasMorePages = coinsData.length === perPage;
+
+  const estimatedTotalPages =
+    currentPage >= 100 ? Math.ceil(currentPage / 100) * 100 + 100 : 100;
+
   return (
     <main id="coins-page">
       <div className="content">
@@ -86,7 +91,11 @@ const CoinsPage = async ({ searchParams }: NextPageProps) => {
           rowKey={(coin) => coin.id}
         />
 
-        <CoinsPagination />
+        <CoinsPagination
+          currentPage={currentPage}
+          totalPages={estimatedTotalPages}
+          hasMorePages={hasMorePages}
+        />
       </div>
     </main>
   );
