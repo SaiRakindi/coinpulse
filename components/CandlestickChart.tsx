@@ -13,7 +13,6 @@ import {
   createChart,
   IChartApi,
   ISeriesApi,
-  OhlcData,
 } from "lightweight-charts";
 import { useEffect, useReducer, useRef, useState, useTransition } from "react";
 
