@@ -233,7 +233,7 @@ interface LiveDataProps {
   coinId: string;
   poolId: string;
   coin: CoinDetailsData;
-  coinOHLCData?: OHLCData[];
+  coinOHLCData?: OHLCData[] | any;
   children?: React.ReactNode;
 }
 
