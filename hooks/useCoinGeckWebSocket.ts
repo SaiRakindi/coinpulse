@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 
 const WS_BASE = `${process.env.NEXT_PUBLIC_COINGECKO_WEBSOCKET_URL}?x_cg_pro_api_key=${process.env.NEXT_PUBLIC_COINGECKO_API_KEY_JSM}`;
@@ -26,6 +28,8 @@ export const useCoinGeckWebSocket = ({
 
     const handleMessage = (event: MessageEvent) => {
       const msg: WebSocketMessage = JSON.parse(event.data);
+
+      console.log("msg", msg);
 
       if (msg.type === "ping") {
         send({ type: "pong" });

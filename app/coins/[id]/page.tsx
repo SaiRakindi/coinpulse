@@ -1,4 +1,5 @@
-import { fetcher } from "@/lib/coingecko.actions";
+import LiveDataWrapper from "@/components/LiveDataWrapper";
+import { fetcher, getPools } from "@/lib/coingecko.actions";
 import { formatCurrency } from "@/lib/utils";
 import { link } from "fs";
 import { ArrowRight, ArrowUp } from "lucide-react";
@@ -28,6 +29,8 @@ const CoinDetailPage = async ({ params }: NextPageProps) => {
 
   const contractAddress = platform?.contract_address || null;
 
+  const pool = await getPools(id, network, contractAddress);
+
   const CoinDetails = [
     {
       label: "Market Cap",
@@ -53,7 +56,9 @@ const CoinDetailPage = async ({ params }: NextPageProps) => {
     {
       label: "Community",
       value: "-",
-      link: coinData.links.subreddit_url[0],
+      link: coinData.links?.subreddit_url
+        ? coinData.links?.subreddit_url[0]
+        : coinData.links?.homepage[0],
       linkText: "Community",
     },
   ];
@@ -61,9 +66,14 @@ const CoinDetailPage = async ({ params }: NextPageProps) => {
   return (
     <main id="coin-details-page">
       <section className="primary">
-        <h1 className="text-3xl font-bold">
-          Coin <strong>{id}</strong>
-        </h1>
+        <LiveDataWrapper
+          coinId={id}
+          poolId={pool.id}
+          coin={coinData}
+          coinOHLCData={coinOHLCData}
+        >
+          <h4>Exchange Listings</h4>
+        </LiveDataWrapper>
 
         <p>Trend Overview</p>
 
@@ -85,7 +95,10 @@ const CoinDetailPage = async ({ params }: NextPageProps) => {
 
                 {link ? (
                   <div className="link">
-                    <Link href={link} target="_blank">
+                    <Link
+                      href={Array.isArray(link) ? link[0] : link}
+                      target="_blank"
+                    >
                       {linkText || label}
                     </Link>
 
