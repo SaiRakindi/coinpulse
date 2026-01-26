@@ -6,6 +6,7 @@ import { useCoinGeckWebSocket } from "@/hooks/useCoinGeckWebSocket";
 import DataTable from "./DataTable";
 import { formatCurrency, timeAgo } from "@/lib/utils";
 import { useState } from "react";
+import CoinHeader from "./CoinHeader";
 
 const LiveDataWrapper = ({
   coinId,
@@ -14,7 +15,7 @@ const LiveDataWrapper = ({
   coinOHLCData,
 }: LiveDataProps) => {
   const [liveInterval, setLiveInterval] = useState<"1s" | "1m">("1s");
-  const { trades, ohlcv } = useCoinGeckWebSocket({
+  const { trades, ohlcv, price } = useCoinGeckWebSocket({
     coinId,
     poolId,
     liveInterval,
@@ -56,7 +57,19 @@ const LiveDataWrapper = ({
 
   return (
     <section id="live-data-wrapper">
-      <p>Coin Header</p>
+      <CoinHeader
+        name={coin.name}
+        image={coin.image.large}
+        livePrice={price?.usd ?? coin?.market_data.current_price.usd}
+        livePriceChangePercentage24h={
+          price?.change24h ??
+          coin?.market_data.price_change_percentage_30d_in_currency.usd
+        }
+        priceChangePercentage30d={
+          coin.market_data.price_change_percentage_30d_in_currency.usd
+        }
+        priceChange24h={coin.market_data.price_change_24h_in_currency.usd}
+      />
 
       <Separator className="divider" />
 
