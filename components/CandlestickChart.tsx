@@ -176,36 +176,35 @@ const CandlestickChart = ({
                 period === value ? "config-button-active" : "config-button"
               }
               onClick={() => handlePeriodChange(value)}
-              disabled={isPending}
+              disabled={isPending || label === "Max"}
             >
               {label}
             </button>
           ))}
         </div>
+        {liveInterval && (
+          <div className="button-group">
+            <span className="text-sm mx-2 font-medium text-purple-100/50">
+              Update Frequency:
+            </span>
+
+            {LIVE_INTERVAL_BUTTONS.map(({ value, label }) => (
+              <button
+                key={value}
+                className={
+                  liveInterval === value
+                    ? "config-button-active"
+                    : "config-button"
+                }
+                onClick={() => setLiveInterval && setLiveInterval(value)}
+                disabled={isPending}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-
-      {liveInterval && (
-        <div className="button-group mb-4">
-          <span className="text-sm mx-2 font-medium text-purple-100/50">
-            Update Frequency:
-          </span>
-
-          {LIVE_INTERVAL_BUTTONS.map(({ value, label }) => (
-            <button
-              key={value}
-              className={
-                liveInterval === value
-                  ? "config-button-active"
-                  : "config-button"
-              }
-              onClick={() => setLiveInterval && setLiveInterval(value)}
-              disabled={isPending}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
 
       <div ref={chartContainerRef} className="chart" style={{ height }}></div>
     </div>
