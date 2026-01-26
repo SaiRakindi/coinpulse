@@ -5,6 +5,7 @@ import CandlestickChart from "./CandlestickChart";
 import { useCoinGeckWebSocket } from "@/hooks/useCoinGeckWebSocket";
 import DataTable from "./DataTable";
 import { formatCurrency, timeAgo } from "@/lib/utils";
+import { useState } from "react";
 
 const LiveDataWrapper = ({
   coinId,
@@ -12,7 +13,12 @@ const LiveDataWrapper = ({
   coin,
   coinOHLCData,
 }: LiveDataProps) => {
-  const { trades } = useCoinGeckWebSocket({ coinId, poolId });
+  const [liveInterval, setLiveInterval] = useState<"1s" | "1m">("1s");
+  const { trades, ohlcv } = useCoinGeckWebSocket({
+    coinId,
+    poolId,
+    liveInterval,
+  });
 
   const tradeColumns: DataTableColumn<Trade>[] = [
     {
@@ -55,7 +61,15 @@ const LiveDataWrapper = ({
       <Separator className="divider" />
 
       <div className="trend">
-        <CandlestickChart coinId={coinId} data={coinOHLCData}>
+        <CandlestickChart
+          coinId={coinId}
+          data={coinOHLCData}
+          liveOhlcv={ohlcv}
+          mode="live"
+          initialPeriod="daily"
+          liveInterval={liveInterval}
+          setLiveInterval={setLiveInterval}
+        >
           <h4>Trend Overview</h4>
         </CandlestickChart>
       </div>
